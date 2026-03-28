@@ -4,15 +4,15 @@ Robot for checking ICBC road test appointments.
 
 ### Usage
 
-Make sure the .env file is properly configured with your ICBC and Gmail credentials.
-To start scraping for ICBC appointments, run checker_bot.py. This script will automatically check for appointments every few minutes and send an email if earlier slots are found.
+Make sure the .env file is properly configured with your ICBC credentials and a [Discord incoming webhook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) URL.
+Run `checker_bot.py` to poll every few minutes: it runs `icbc-appointment.py`, compares the new `appointments.csv` to the snapshot from before that run, and posts to Discord when a **earlier** slot appears (per location). If there was no prior snapshot, it only records a baseline and does not notify. `checker_state.json` stores already-notified slots to reduce duplicate alerts.
 Execute the following command to run the bot:
 ```python
 python checker_bot.py
 ```
 ## Config
 
-create a .env file in the root directory to store your configuration values, such as ICBC credentials and Gmail details. `./.env`
+create a .env file in the root directory to store your configuration values, such as ICBC credentials and your Discord webhook URL. `./.env`
 ```yaml
 # .env file
 ICBC_LASTNAME="YOUR_LAST_NAME"
@@ -24,9 +24,7 @@ ICBC_EXPECT_AFTERTIME="07:00"  # HH:MM
 ICBC_EXPECT_BEFORETIME="17:30"  # HH:MM
 ICBC_EXAMCLASS=7  # 5/7
 
-GMAIL_SENDER_ADDRESS="SENDER_EMAIL@gmail.com"
-GMAIL_SENDER_PASS="YOUR_EMAIL_PASSWORD"
-GMAIL_RECEIVER_ADDRESS="RECEIVER_EMAIL@gmail.com"
+DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/WEBHOOK_ID/WEBHOOK_TOKEN"
 ```
 
 ## Usage

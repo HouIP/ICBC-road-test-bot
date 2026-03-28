@@ -9,6 +9,9 @@ __pycache__/
 # Distribution / packaging
 config.yml
 .env
+
+# Local checker state (dedupe notified slots)
+checker_state.json
 .Python
 build/
 develop-eggs/

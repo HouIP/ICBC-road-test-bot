@@ -24,12 +24,13 @@ DATE_FORMAT = "%Y-%m-%d"
 TIME_FORMAT = "%H:%M"
 
 locations = [
-    {"name": "Surrey Driver Licensing", "aPosID": 11},
-    {"name": "Surrey Claim Centre", "aPosID": 269},
-    {"name": "Guildford Boardwalk", "aPosID": 281},
-    {"name": "Newton Claim Centre", "aPosID": 271},
-    {"name": "Langley Driver Licensing", "aPosID": 153},
-    {"name": "Port Coquitlam Driver Licensing", "aPosID": 73},
+    # {"name": "Surrey Driver Licensing", "aPosID": 11},
+    # {"name": "Surrey Claim Centre", "aPosID": 269},
+    # {"name": "Guildford Boardwalk", "aPosID": 281},
+    # {"name": "Newton Claim Centre", "aPosID": 271},
+    # {"name": "Langley Driver Licensing", "aPosID": 153},
+    # {"name": "Port Coquitlam Driver Licensing", "aPosID": 73},
+    {"name": "Burnaby Claim Centre", "aPosID": 274},
 ]
 
 user_agents = [
