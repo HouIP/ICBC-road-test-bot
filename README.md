@@ -49,6 +49,7 @@ point_grey = {
 | Richmond driver licensing (Lansdowne Centre mall)  | 93  |
 | Vancouver driver licensing (Point Grey)  | 9  |
 | Vancouver claim centre (Kingsway)  | 275  |
+| Burnaby driver licensing (3880 Lougheed Highway)  | 2  |
 | Burnaby claim centre (Wayburne Drive)  | 274  |
 | Surrey driver licensing  | 11  |
 | Newton claim centre (68 Avenue)  | 271  |
