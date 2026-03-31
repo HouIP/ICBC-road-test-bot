@@ -5,7 +5,7 @@ Robot for checking ICBC road test appointments.
 ### Usage
 
 Make sure the .env file is properly configured with your ICBC credentials and a [Discord incoming webhook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) URL.
-Run `checker_bot.py` to poll every few minutes: it runs `icbc-appointment.py`, compares the new `appointments.csv` to the snapshot from before that run, and posts to Discord when a **earlier** slot appears (per location). If there was no prior snapshot, it only records a baseline and does not notify. `checker_state.json` stores already-notified slots to reduce duplicate alerts.
+Run `checker_bot.py` to poll every few minutes: it runs `icbc-appointment.py`, compares the new `appointments.csv` to the snapshot from before that run, and posts to Discord when a **earlier** slot appears (per location). On the **first** run with an empty `appointments.csv`, it records a baseline once and does not notify (repeated empty scrapes do not re-baseline). `checker_state.json` stores already-notified slots to reduce duplicate alerts.
 Execute the following command to run the bot:
 ```python
 python checker_bot.py

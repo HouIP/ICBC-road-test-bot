@@ -73,22 +73,32 @@ def slot_key(location: str, date_time: str) -> str:
     return f"{location}|{date_time}"
 
 
-def load_notified_keys() -> set[str]:
+def load_state() -> tuple[set[str], bool]:
     if not STATE_PATH.is_file():
-        return set()
+        return set(), False
     try:
         raw = json.loads(STATE_PATH.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError):
-        return set()
+        return set(), False
     keys = raw.get("notified_slot_keys")
-    if not isinstance(keys, list):
-        return set()
-    return {str(k) for k in keys}
+    notified = {str(k) for k in keys} if isinstance(keys, list) else set()
+    if "baseline_done" in raw:
+        baseline_done = bool(raw["baseline_done"])
+    else:
+        # Older state files without the flag: assume first-time setup already happened.
+        baseline_done = True
+    return notified, baseline_done
 
 
-def save_notified_keys(keys: set[str]) -> None:
+def save_state(notified: set[str], baseline_done: bool) -> None:
     STATE_PATH.write_text(
-        json.dumps({"notified_slot_keys": sorted(keys)}, indent=2),
+        json.dumps(
+            {
+                "notified_slot_keys": sorted(notified),
+                "baseline_done": baseline_done,
+            },
+            indent=2,
+        ),
         encoding="utf-8",
     )
 
@@ -178,13 +188,17 @@ def main() -> None:
     os.system(f'"{sys.executable}" icbc-appointment.py')
 
     new_appointments = load_appointments(APPOINTMENTS_CSV)
-    notified = load_notified_keys()
+    notified, baseline_done = load_state()
 
-    if is_empty_snapshot(old_appointments):
+    # CSV with no matching rows is still "empty"; that must not re-trigger baseline every run.
+    if not is_empty_snapshot(old_appointments):
+        baseline_done = True
+
+    if is_empty_snapshot(old_appointments) and not baseline_done:
         notified |= all_slot_keys(new_appointments)
-        save_notified_keys(notified)
+        save_state(notified, baseline_done=True)
         print(
-            "Baseline: no prior snapshot; recorded current slots, no Discord notification."
+            "Baseline: first snapshot (empty CSV); recorded current slots, no Discord notification."
         )
         return
 
@@ -197,9 +211,10 @@ def main() -> None:
         for loc, slots in to_notify.items():
             for s in slots:
                 notified.add(slot_key(loc, s))
-        save_notified_keys(notified)
+        save_state(notified, baseline_done=True)
     else:
         print("No new earlier slots to notify (or nothing earlier than last snapshot).")
+        save_state(notified, baseline_done=True)
 
 
 if __name__ == "__main__":

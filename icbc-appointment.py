@@ -31,7 +31,7 @@ locations = [
     # {"name": "Langley Driver Licensing", "aPosID": 153},
     # {"name": "Port Coquitlam Driver Licensing", "aPosID": 73},
     {"name": "Burnaby Claim Centre", "aPosID": 274},
-    {"name": "Burnaby Driver Licensing", "aPosID": 2},
+    # {"name": "Burnaby Driver Licensing", "aPosID": 2},
 ]
 
 user_agents = [
